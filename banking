@@ -1,0 +1,91 @@
+My Drive
+import java.util.HashMap;
+import java.util.Map;
+
+class Bank {
+    private Map<Integer, Account> accounts;
+    private int nextAccountId;
+
+    public Bank() {
+        accounts = new HashMap<>();
+        nextAccountId = 1;
+    }
+
+    public int createAccount() {
+        int accountId = nextAccountId++;
+        Account account = new Account(accountId);
+        accounts.put(accountId, account);
+        return accountId;
+    }
+
+    public void deposit(int accountId, double amount) {
+        if (accounts.containsKey(accountId)) {
+            Account account = accounts.get(accountId);
+            account.deposit(amount);
+        } else {
+            System.out.println("Account not found");
+        }
+    }
+
+    public void withdraw(int accountId, double amount) {
+        if (accounts.containsKey(accountId)) {
+            Account account = accounts.get(accountId);
+            account.withdraw(amount);
+        } else {
+            System.out.println("Account not found");
+        }
+    }
+
+    public double getBalance(int accountId) {
+        if (accounts.containsKey(accountId)) {
+            Account account = accounts.get(accountId);
+            return account.getBalance();
+        } else {
+            System.out.println("Account not found");
+            return -1;
+        }
+    }
+}
+
+class Account {
+    private int accountId;
+    private double balance;
+
+    public Account(int accountId) {
+        this.accountId = accountId;
+        balance = 0;
+    }
+
+    public void deposit(double amount) {
+        balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+        } else {
+            System.out.println("Insufficient funds");
+        }
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+
+public class SimpleBankingApp {
+    public static void main(String[] args) {
+        Bank bank = new Bank();
+
+        int accountId1 = bank.createAccount();
+        int accountId2 = bank.createAccount();
+
+        bank.deposit(accountId1, 1000);
+        bank.deposit(accountId2, 500);
+
+        bank.withdraw(accountId1, 200);
+
+        System.out.println("Account " + accountId1 + " balance: $" + bank.getBalance(accountId1));
+        System.out.println("Account " + accountId2 + " balance: $" + bank.getBalance(accountId2));
+    }
+}
